@@ -8,6 +8,7 @@
 import Foundation
 
 struct Match: Codable, Identifiable {
+    var competition: Competition
     var utcDate: String
     var status: String
     var matchday: Int
@@ -15,9 +16,9 @@ struct Match: Codable, Identifiable {
     var homeTeam: Team
     var awayTeam: Team
     var score: Score
-    var referee: Referee?
     
     enum CodingKeys: String, CodingKey {
+        case competition = "competition"
         case utcDate = "utcDate"
         case status = "status"
         case matchday = "matchday"
@@ -25,7 +26,6 @@ struct Match: Codable, Identifiable {
         case homeTeam = "homeTeam"
         case awayTeam = "awayTeam"
         case score = "score"
-        case referee = "referee"
     }
     
     var id: String {
@@ -49,7 +49,22 @@ struct Match: Codable, Identifiable {
         let dateFormatter = ISO8601DateFormatter()
         return dateFormatter.date(from: utcDate)
     }
+    
+    struct Competition: Codable, Identifiable {
+        var id: Int?
+        var name: String
+        var code: String
+        var type: String
+        var emblem: String
+    }
 
+    struct Season: Codable {
+        var id: Int
+        var name: String
+        var startDate: String
+        var endDate: String
+        var currentMatchday: Int
+    }
     
     struct Team: Codable {
         var id: Int
@@ -78,25 +93,7 @@ struct Match: Codable, Identifiable {
     }
 }
 
-struct Season: Codable {
-    var id: Int
-    var name: String
-    var startDate: String
-    var endDate: String
-    var currentMatchday: Int
-}
-
-struct Competition: Codable, Identifiable {
-    var id: Int?
-    var name: String
-    var code: String
-    var type: String
-    var emblem: String
-}
-
 struct LeagueData: Decodable {
-    var season: Season?
-    var competition: Competition?
     var matches: [Match]
 }
 
@@ -143,7 +140,7 @@ class FootballDataAPI {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
                 let leagueData = try decoder.decode(LeagueData.self, from: data)
-                print("Decoded LeagueData: \(leagueData)") // Full object for debugging
+                //print("Decoded LeagueData: \(leagueData)") // Full object for debugging
 
                 let allMatches = leagueData.matches
                 print("Total matches: \(allMatches.count)")
@@ -157,6 +154,3 @@ class FootballDataAPI {
         }.resume()
     }
 }
-
-
-

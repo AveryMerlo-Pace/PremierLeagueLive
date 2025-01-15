@@ -14,11 +14,31 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             VStack {
-                // Date Picker
-                DatePicker("Select Date", selection: $selectedDate, displayedComponents: .date)
-                    .datePickerStyle(GraphicalDatePickerStyle())
-                    .padding()
-
+                Group {
+                    HStack {
+                        Button("Today") {
+                            selectedDate = Date() // Reset to current date
+                            fetchGamesForToday() // Fetch games for today
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 6)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        
+                        Spacer()
+                        
+                        // Date Picker
+                        DatePicker("", selection: $selectedDate, displayedComponents: .date)
+                    }
+                    .padding(.horizontal)
+                   
+                    Text("Matches")
+                        .font(.largeTitle)
+                        .frame(alignment: .center)
+                        .bold()
+                    
+                }
                 // Loading Indicator
                 if isLoading {
                     ProgressView("Loading games...")
@@ -26,7 +46,7 @@ struct ContentView: View {
                 } else {
                     // Matches List
                     List(matches) { match in
-                        VStack(alignment: .leading, spacing: 0) { // Ensure spacing is zero
+                        VStack(spacing: 0) { // Ensure spacing is zero
                             HStack {
                                 AsyncImage(url: URL(string: match.homeTeam.crest)!) { image in
                                     image
@@ -51,8 +71,9 @@ struct ContentView: View {
                                 Text(match.awayTeam.name)
                             }
                             Spacer()
-                            VStack(alignment: .leading) {
+                            Group {
                                 Text("\(match.homeTeam.shortName) vs \(match.awayTeam.shortName)")
+                                Spacer()
                                 if match.isLive {
                                     if let homeScore = match.score.fullTime.home, let awayScore = match.score.fullTime.away {
                                         Text("Live: \(match.homeTeam.tla) \(homeScore) - \(awayScore) \(match.awayTeam.tla)")
@@ -67,26 +88,29 @@ struct ContentView: View {
                                     if let homeScore = match.score.fullTime.home, let awayScore = match.score.fullTime.away {
                                         Text("FT: \(match.homeTeam.tla) \(homeScore) - \(awayScore) \(match.awayTeam.tla)")
                                             .font(.subheadline)
-                                            .foregroundColor(.red) // Ended score color
-                                    }
-                                }
-                                
-                                Group {
-                                    if match.hasNotStarted {
-                                        Text(formatDate(match.utcDate))
-                                            .font(.subheadline)
-                                            .foregroundColor(.gray)
+                                            .foregroundColor(.red)
+                                            .bold() // Ended score color
                                     }
                                 }
                             }
+                            
                             Spacer()
+                            Group {
+                                if match.hasNotStarted {
+                                        Text(formatDate(match.utcDate))
+                                            .font(.subheadline)
+                                            .foregroundColor(.gray)
+                                }
+                                Text("\(match.competition.name), Matchday \(match.matchday)")
+                                    .font(.subheadline)
+                                    .foregroundColor(.gray)
+                            }
                         }
                         .padding(.vertical, 5) // Adjust padding as needed
                         .background(Color.clear) // Ensure no background color
                     }
                 }
             }
-            .navigationTitle("Matches")
             .onChange(of: selectedDate) { _ in
                 fetchGamesForSelectedDate()
             }
