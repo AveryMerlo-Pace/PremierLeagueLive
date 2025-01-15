@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MatchView: View {
     let match: Match
-
+    
     var body: some View {
         VStack(alignment: .leading) {
             // Competition Logo
@@ -14,7 +14,7 @@ struct MatchView: View {
             } placeholder: {
                 ProgressView()
             }
-
+            
             // Match Details
             HStack {
                 VStack(alignment: .leading) {
@@ -44,7 +44,7 @@ struct MatchView: View {
                 }
                 
             }
-
+            
             // Score Display
             if let homeScore = match.score.fullTime.home, let awayScore = match.score.fullTime.away {
                 HStack {
@@ -62,20 +62,27 @@ struct MatchView: View {
             } else {
                 Text("Not Started")
             }
-
-            // Match Date and Time
-            Text(formatDate(match.utcDate))
-                .font(.subheadline)
-                .foregroundColor(.gray)
-
-            // Competition and Matchday
-            Text("\(match.competition.name) - Matchday \(match.matchday)")
-                .font(.subheadline)
-                .foregroundColor(.gray)
+            
+            Group {
+                // Match Date and Time
+                Text(formatDate(match.utcDate))
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                
+                // Competition and Matchday
+                Text("\(match.competition.name) - Matchday \(match.matchday)")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                
+                Text("\(match.id)")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+            
         }
         .padding()
     }
-
+    
     private func formatDate(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"

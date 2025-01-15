@@ -98,26 +98,62 @@ struct MatchListView: View {
                                                     if let homeScore = match.score.fullTime.home, let awayScore = match.score.fullTime.away {
                                                         VStack {
                                                             HStack {
-                                                                Text("LIVE:")
-                                                                    .font(.title2)
-                                                                    .foregroundColor(.green)
                                                                 Text("\(match.homeTeam.tla)")
                                                                     .font(.title2)
+                                                                    .bold(homeScore > awayScore)
                                                                     .foregroundColor(homeScore > awayScore ? .green : .black)
                                                                 Text("\(homeScore)")
                                                                     .font(.title2)
+                                                                    .bold(homeScore > awayScore)
                                                                     .foregroundColor(homeScore > awayScore ? .green : .black)
                                                                 Text("-")
                                                                     .font(.title2)
                                                                 Text("\(awayScore)")
                                                                     .font(.title2)
+                                                                    .bold(awayScore > homeScore)
                                                                     .foregroundColor(awayScore > homeScore ? .green : .black)
                                                                 Text("\(match.awayTeam.tla)")
                                                                     .font(.title2)
+                                                                    .bold(awayScore > homeScore)
                                                                     .foregroundColor(awayScore > homeScore ? .green : .black)
                                                             }
+                                                            Text("LIVE")
+                                                                .font(.subheadline)
+                                                                .bold()
+                                                                .foregroundColor(.green)
+                                                                .opacity(50.0)
                                                         }
                                                     }
+                                                } else if match.isHalftime {
+                                                    if let homeScore = match.score.fullTime.home, let awayScore = match.score.fullTime.away {
+                                                        VStack {
+                                                            HStack {
+                                                                Text("\(match.homeTeam.tla)")
+                                                                    .font(.title2)
+                                                                    .bold(homeScore > awayScore)
+                                                                    .foregroundColor(homeScore > awayScore ? .green : .black)
+                                                                Text("\(homeScore)")
+                                                                    .font(.title2)
+                                                                    .bold(homeScore > awayScore)
+                                                                    .foregroundColor(homeScore > awayScore ? .green : .black)
+                                                                Text("-")
+                                                                    .font(.title2)
+                                                                Text("\(awayScore)")
+                                                                    .font(.title2)
+                                                                    .bold(awayScore > homeScore)
+                                                                    .foregroundColor(awayScore > homeScore ? .green : .black)
+                                                                Text("\(match.awayTeam.tla)")
+                                                                    .font(.title2)
+                                                                    .bold(awayScore > homeScore)
+                                                                    .foregroundColor(awayScore > homeScore ? .green : .black)
+                                                            }
+                                                            Text("HT")
+                                                                .font(.subheadline)
+                                                                .bold()
+                                                                .foregroundColor(.black)
+                                                        }
+                                                    }
+                                                    
                                                 } else {
                                                     if let homeScore = match.score.fullTime.home, let awayScore = match.score.fullTime.away {
                                                         VStack {
@@ -143,8 +179,8 @@ struct MatchListView: View {
                                                             }
                                                             Text("FT")
                                                                 .font(.subheadline)
-                                                                .foregroundStyle(Color.gray)
-                                                                .opacity(50.0)
+                                                                .foregroundStyle(Color.black)
+                                                                .bold()
                                                         }
                                                     }
                                                 }

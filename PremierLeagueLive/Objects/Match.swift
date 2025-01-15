@@ -9,6 +9,7 @@ import Foundation
 
 struct Match: Codable, Identifiable {
     var competition: Competition
+    var id: Int
     var utcDate: String
     var status: String
     var matchday: Int
@@ -19,6 +20,7 @@ struct Match: Codable, Identifiable {
     
     enum CodingKeys: String, CodingKey {
         case competition = "competition"
+        case id = "id"
         case utcDate = "utcDate"
         case status = "status"
         case matchday = "matchday"
@@ -28,12 +30,12 @@ struct Match: Codable, Identifiable {
         case score = "score"
     }
     
-    var id: String {
-        return "\(homeTeam.name)-\(awayTeam.name)-\(utcDate)"
-    }
-    
     var isLive: Bool {
        return status == "IN_PLAY"
+    }
+    
+    var isHalftime: Bool {
+        return status == "PAUSED"
     }
     
     var isOver: Bool {
