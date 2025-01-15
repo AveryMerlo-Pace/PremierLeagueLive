@@ -93,12 +93,12 @@ struct Match: Codable, Identifiable {
     }
 }
 
-struct LeagueData: Decodable {
+struct MatchData: Decodable {
     var matches: [Match]
 }
 
 
-class FootballDataAPI {
+class MatchAPI {
     private let apiKey = "9ddd2bae6d61416fa1a85f7dca1569a6"
     private let baseURL = "https://api.football-data.org/v4"
     
@@ -139,10 +139,10 @@ class FootballDataAPI {
             do {
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
-                let leagueData = try decoder.decode(LeagueData.self, from: data)
+                let matchData = try decoder.decode(MatchData.self, from: data)
                 //print("Decoded LeagueData: \(leagueData)") // Full object for debugging
 
-                let allMatches = leagueData.matches
+                let allMatches = matchData.matches
                 print("Total matches: \(allMatches.count)")
                 completion(allMatches)
 
