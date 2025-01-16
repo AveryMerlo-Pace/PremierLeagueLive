@@ -18,7 +18,7 @@ struct MatchListView: View {
                     HStack {
                         Button("Today") {
                             selectedDate = Date() // Reset to current date
-                            fetchGamesForToday() // Fetch games for today
+                            fetchGamesForSelectedDate() // Fetch games for today
                         }
                         .padding(.horizontal)
                         .padding(.vertical, 6)
@@ -212,7 +212,7 @@ struct MatchListView: View {
                 fetchGamesForSelectedDate()
             }
             .onAppear {
-                fetchGamesForToday()
+                fetchGamesForSelectedDate()
             }
         }
     }
@@ -232,25 +232,6 @@ struct MatchListView: View {
                 } else {
                     print("Error: Data missing or malformed")
                     // Handle the missing data gracefully, e.g. show an alert or retry
-                }
-                self.isLoading = false
-            }
-        }
-    }
-    
-    // Fetch games for today's date
-    private func fetchGamesForToday() {
-        let formattedDate = formatApiDate(Date())
-
-        isLoading = true
-        let api = MatchAPI()
-        api.fetchPremierLeagueGames(for: formattedDate) { allMatches in
-            DispatchQueue.main.async {
-                if let allMatches = allMatches {
-                    // print("Fetched \(allMatches.count) matches.") // Debugging
-                    self.matches = allMatches
-                } else {
-                    print("No matches found or data error.")
                 }
                 self.isLoading = false
             }
@@ -278,6 +259,3 @@ struct MatchListView: View {
     }
 }
 
-#Preview {
-    MatchListView()
-}

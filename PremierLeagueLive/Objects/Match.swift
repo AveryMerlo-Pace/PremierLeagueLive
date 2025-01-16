@@ -103,9 +103,6 @@ struct MatchData: Decodable {
 class MatchAPI {
     private let apiKey = "9ddd2bae6d61416fa1a85f7dca1569a6"
     private let baseURL = "https://api.football-data.org/v4"
-    
-    // Replace 2021 with the correct ID if it's different
-    private let premierLeagueId = 2021
 
     func fetchPremierLeagueGames(for date: String, completion: @escaping ([Match]?) -> Void) {
         guard let encodedDate = date.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
