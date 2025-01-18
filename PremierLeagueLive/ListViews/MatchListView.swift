@@ -202,8 +202,6 @@ struct MatchListView: View {
                                 }
                             }
                         }
-                        .padding(.vertical, 5) // Adjust padding as needed
-                        .listRowBackground(Color.clear) // Ensure no background color
                     }
                     .listStyle(.plain)
                 }
@@ -244,7 +242,7 @@ struct MatchListView: View {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.string(from: date)
     }
-
+    
     // Helper function to format the UTC date string for display (e.g., "Jan 1, 2024, 12:00 PM")
     private func formatDate(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
